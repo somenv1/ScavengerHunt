@@ -5,7 +5,7 @@
 
 // Settings
 const settings = {
-    showMapsButton: true,  // Toggle to show/hide "Open in Maps" button
+    showMapsButton: false,  // Toggle to show/hide "Open in Maps" button
     minRadius: 80          // Minimum radius in meters
 };
 
@@ -27,8 +27,8 @@ const locations = [
         coords: { lat: 50.8823446, lng: 4.3297479 },
         radius: 100, // meters (was 80, scaled up)
         clue: `Where frozen nights held our laughter tight,
-A snowman born of wine and starlight.
-Return to where the cosmos knew our name—
+A snowman built on Gordon's might.
+Return to where the cosmos knew our name,
 The park that watched our love catch flame.`,
         memory: "This is where we watched countless night skies together, and where we once built a very questionable snowman after a few too many drinks. Our story's first chapter.",
         mapsQuery: "Jules+Lorgesquare,+Jette,+Belgium"
@@ -36,11 +36,11 @@ The park that watched our love catch flame.`,
     {
         id: 2,
         name: "Mykonos Pitta Gyros",
-        coords: { lat: 50.8454, lng: 4.3527 },
-        radius: 80, // (was 40, now minimum 80)
+        coords: { lat: 50.84585, lng: 4.35291 },
+        radius: 100, // (was 40, now minimum 80)
         clue: `Through cobblestones near the Grand Place's glow,
 Where Greek flavors made our hearts grow.
-Find the street of cheese and ancient trade—
+Find the street of cheese and ancient trade,
 A hunger for you that never will fade.`,
         memory: "Our spot for Greek street food in the heart of Brussels. Sometimes the simplest meals become the sweetest memories.",
         mapsQuery: "Mykonos+Pitta+Gyros,+Rue+du+Marché+aux+Fromages+8,+Brussels"
@@ -48,11 +48,11 @@ A hunger for you that never will fade.`,
     {
         id: 3,
         name: "Café Léopold Royal",
-        coords: { lat: 50.8469, lng: 4.3631 },
-        radius: 80, // (was 40, now minimum 80)
+        coords: { lat: 50.847691, lng: 4.363278 },
+        radius: 100, // (was 40, now minimum 80)
         clue: `Near royal streets where kings once strode,
 A café holds our secret code.
-The first of coffees, the first of "us"—
+The first of coffees, the first of "us",
 Where nervous hearts learned how to trust.`,
         memory: "Our first date. I remember every detail—the way you smiled, the way time seemed to stop. This is where 'we' began.",
         mapsQuery: "Léopold+Café+Royal,+Rue+de+Louvain+2,+Brussels"
@@ -60,23 +60,23 @@ Where nervous hearts learned how to trust.`,
     {
         id: 4,
         name: "The Triumphal Arch",
-        coords: { lat: 50.8397, lng: 4.3936 },
-        radius: 90, // (was 60, scaled up)
-        clue: `An arch that celebrates fifty years,
-Now witnesses our joys and tears.
-Where chariots stand frozen in gold—
-Our love story continues to unfold.`,
+        coords: { lat: 50.8405527, lng: 4.3929939 },
+        radius: 150, // (was 60, scaled up)
+        clue: `From whiskers and purrs our journey led,
+To golden arches overhead.
+After our second date we wandered here,
+Where triumph's chariot holds us near.`,
         memory: "The magnificent Cinquantenaire Arch. A monument to triumph, just like what we've built together.",
         mapsQuery: "Cinquantenaire+Arch,+Brussels"
     },
     {
         id: 5,
         name: "Docks Bruxsel",
-        coords: { lat: 50.8679, lng: 4.3492 },
-        radius: 100, // (was 80, scaled up)
+        coords: { lat: 50.87984, lng: 4.37348 },
+        radius: 150, // (was 80, scaled up)
         clue: `By the docks where waters flow,
 A second chance let our love grow.
-Dinner lights and futures bright—
+With sushi shared and futures bright,
 This place sealed our hearts that night.`,
         memory: "Our second date. The one that led to everything. I knew that evening that you were different, that this was different.",
         mapsQuery: "Docks+Bruxsel,+Boulevard+Lambermont+1,+Brussels"
@@ -84,12 +84,12 @@ This place sealed our hearts that night.`,
     {
         id: 6,
         name: "Our Sunset Spot",
-        coords: { lat: 50.8735, lng: 4.3548 },
-        radius: 80, // (was 50, now minimum 80)
+        coords: { lat: 50.880531, lng: 4.383858 },
+        radius: 150, // (was 50, now minimum 80)
         clue: `Follow the lion's path to the sky,
 Where sun meets earth and days drift by.
-The final stop, but not the end—
-Where lover meets their truest friend.`,
+The final stop where I will ask,
+Will you be mine? My sweetest task.`,
         memory: "A place of sunsets and new beginnings. Every ending is just another start.",
         mapsQuery: "Leeuwoprit,+Brussels"
     }
@@ -150,13 +150,13 @@ function showScreen(screenName) {
 
 function handleLocationNumberTap() {
     skipCodeTapCount++;
-    
+
     // Reset tap count after 1 second of no taps
     clearTimeout(skipCodeTapTimer);
     skipCodeTapTimer = setTimeout(() => {
         skipCodeTapCount = 0;
     }, 1000);
-    
+
     // Show skip code input after 3 taps
     if (skipCodeTapCount >= 3) {
         toggleSkipCodeInput();
@@ -179,19 +179,19 @@ function toggleSkipCodeInput() {
 function validateSkipCode() {
     const inputElement = document.getElementById('skip-code-input');
     const errorElement = document.getElementById('skip-code-error');
-    
+
     if (!inputElement) {
         alert('Error: Input not found!');
         return;
     }
-    
+
     const enteredCode = inputElement.value.trim().toUpperCase();
-    
+
     if (!enteredCode) {
         if (errorElement) errorElement.textContent = 'Please enter a code';
         return;
     }
-    
+
     // Check if code matches any location
     let foundLocation = null;
     for (let i = 1; i <= 6; i++) {
@@ -200,7 +200,7 @@ function validateSkipCode() {
             break;
         }
     }
-    
+
     if (foundLocation !== null) {
         // Valid code - jump to that location's success screen
         if (errorElement) errorElement.textContent = '';
@@ -304,7 +304,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 function updateDistanceDisplay(distance, radius) {
     const distanceElement = elements.distanceText;
-    
+
     if (distance <= radius) {
         distanceElement.textContent = "You're here! ♥";
         distanceElement.className = "distance-text very-close";
@@ -338,52 +338,52 @@ function updateDistanceDisplay(distance, radius) {
 
 function loadLocation(index) {
     const location = locations[index];
-    
+
     // Update progress
     const progress = ((index + 1) / locations.length) * 100;
     elements.progressFill.style.width = `${progress}%`;
     elements.currentLocation.textContent = index + 1;
     elements.totalLocations.textContent = locations.length;
     elements.locNum.textContent = index + 1;
-    
+
     // Update clue
     elements.clueText.textContent = location.clue;
-    
+
     // Reset distance display
     elements.distanceText.textContent = "Calculating...";
     elements.distanceText.className = "distance-text";
     elements.arrivedBtn.disabled = true;
-    
+
     // Hide skip code input
     if (elements.skipCodeContainer) {
         elements.skipCodeContainer.classList.remove('visible');
         elements.skipCodeInput.value = '';
         elements.skipCodeError.textContent = '';
     }
-    
+
     // Show/hide maps button based on settings
     if (elements.navBtn) {
         elements.navBtn.style.display = settings.showMapsButton ? 'flex' : 'none';
     }
-    
+
     // Start tracking
     startGPSTracking();
 }
 
 function showSuccessScreen() {
     stopGPSTracking();
-    
+
     const location = locations[currentLocationIndex];
     elements.locationName.textContent = location.name;
     elements.memoryDescription.textContent = location.memory;
     elements.envelopeNum.textContent = currentLocationIndex + 1;
-    
+
     showScreen('success');
 }
 
 function goToNextLocation() {
     currentLocationIndex++;
-    
+
     if (currentLocationIndex >= locations.length) {
         showScreen('final');
     } else {
@@ -401,13 +401,13 @@ function openMaps() {
 function refreshGPS() {
     // Stop current tracking
     stopGPSTracking();
-    
+
     // Reset display
     elements.distanceText.textContent = "Refreshing...";
     elements.distanceText.className = "distance-text";
     elements.gpsStatus.textContent = "Getting fresh location...";
     elements.gpsStatus.classList.remove('error');
-    
+
     // Add a small spinning animation feedback
     if (elements.refreshBtn) {
         elements.refreshBtn.classList.add('spinning');
@@ -415,7 +415,7 @@ function refreshGPS() {
             elements.refreshBtn.classList.remove('spinning');
         }, 1000);
     }
-    
+
     // Restart tracking
     startGPSTracking();
 }
@@ -453,7 +453,7 @@ if (elements.refreshBtn) {
 document.addEventListener('DOMContentLoaded', function() {
     const skipCodeBtn = document.getElementById('skip-code-btn');
     const skipCodeInput = document.getElementById('skip-code-input');
-    
+
     if (skipCodeBtn) {
         skipCodeBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function() {
             validateSkipCode();
         });
     }
-    
+
     if (skipCodeInput) {
         skipCodeInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -486,7 +486,7 @@ function init() {
             // Could offer to resume, but for now start fresh
         }
     }
-    
+
     showScreen('welcome');
 }
 

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scavenger Hunt Letters</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-lightest: #fff5f7;
+            --pink-light: #ffe4ec;
+            --pink-soft: #ffc2d4;
+            --pink-medium: #ff9ebb;
+            --pink-primary: #e8728a;
+            --pink-deep: #c94b6d;
+            --pink-dark: #9d3a5a;
+            --gold: #d4a574;
+            --gold-light: #f0d9c0;
+            --text-dark: #4a3540;
+            --text-medium: #6d5a63;
+            --text-light: #8f7a84;
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: white;
+            color: var(--text-dark);
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            .letter {
+                page-break-after: always;
+            }
+            .letter:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        .letter {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 12mm;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 6mm;
+            left: 6mm;
+            right: 6mm;
+            bottom: 6mm;
+            border: 2px solid var(--pink-soft);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            font-size: 40px;
+            color: var(--pink-primary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 30px;
+        }
+
+        .letter-header {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-bottom: 15px;
+            padding-top: 6mm;
+        }
+
+        .letter-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--pink-primary) 0%, var(--pink-deep) 100%);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            padding: 7px 18px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .skip-code-box {
+            display: inline-block;
+            background: var(--pink-lightest);
+            border: 2px dashed var(--pink-soft);
+            padding: 8px 16px;
+            border-radius: 10px;
+            margin-top: 8px;
+        }
+
+        .skip-code-label {
+            font-size: 9px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 3px;
+        }
+
+        .skip-code {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--pink-deep);
+            letter-spacing: 0.15em;
+        }
+
+        .decorative-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 12px 0;
+            color: var(--pink-soft);
+        }
+
+        .decorative-line::before,
+        .decorative-line::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--pink-soft), transparent);
+        }
+
+        .decorative-line span {
+            font-size: 20px;
+        }
+
+        .clue-section {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, var(--pink-lightest) 0%, white 100%);
+            border-left: 4px solid var(--pink-primary);
+            padding: 18px 22px;
+            margin-bottom: 15px;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 15px rgba(200, 75, 109, 0.08);
+        }
+
+        .clue-label {
+            font-size: 10px;
+            color: var(--pink-primary);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .clue-text {
+            font-family: var(--font-display);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            font-style: italic;
+            white-space: pre-line;
+            text-align: center;
+        }
+
+        .content-section {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .photo-container {
+            width: 100%;
+            max-width: 150mm;
+            height: 105mm;
+            border: 4px solid var(--pink-soft);
+            border-radius: 16px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(200, 75, 109, 0.2);
+            margin-bottom: 12mm;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .qr-container {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--pink-soft);
+            border-radius: 12px;
+            padding: 5px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(200, 75, 109, 0.15);
+        }
+
+        .qr-container img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .letter-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .signature-label {
+            font-size: 13px;
+            color: var(--text-medium);
+            font-style: italic;
+            font-family: var(--font-display);
+        }
+
+        /* Intro Page Styles */
+        .intro-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30mm 20mm;
+        }
+
+        .intro-title {
+            font-family: var(--font-display);
+            font-size: 42px;
+            color: var(--pink-dark);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .intro-subtitle {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--pink-primary);
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        .intro-heart {
+            font-size: 60px;
+            color: var(--pink-primary);
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .intro-instructions {
+            background: linear-gradient(135deg, var(--pink-lightest) 0%, white 100%);
+            border: 2px solid var(--pink-soft);
+            border-radius: 16px;
+            padding: 30px 40px;
+            margin-bottom: 40px;
+            max-width: 500px;
+            box-shadow: 0 8px 25px rgba(200, 75, 109, 0.15);
+        }
+
+        .instructions-title {
+            font-size: 18px;
+            color: var(--pink-deep);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .instructions-list {
+            text-align: left;
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        .instructions-list li {
+            margin-bottom: 12px;
+        }
+
+        .intro-link-box {
+            background: white;
+            border: 3px solid var(--pink-primary);
+            border-radius: 12px;
+            padding: 25px 35px;
+            margin-bottom: 30px;
+        }
+
+        .link-label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 10px;
+        }
+
+        .intro-link {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: var(--pink-deep);
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .intro-note {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--text-medium);
+            font-style: italic;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        @media screen {
+            body {
+                background: #f5f5f5;
+                padding: 20px;
+            }
+            .letter {
+                margin-bottom: 20px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRO PAGE -->
+    <div class="letter intro-page">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="intro-title">A Journey Through Us</div>
+        <div class="intro-subtitle">A Scavenger Hunt Made With Love</div>
+
+        <div class="intro-heart">♥</div>
+
+        <div class="intro-instructions">
+            <div class="instructions-title">How It Works</div>
+            <ol class="instructions-list">
+                <li>Open each envelope only when you reach the location</li>
+                <li>Use the app to track your GPS and find each spot</li>
+                <li>Each letter contains a memory and the last clue</li>
+                <li>Scan QR codes if you get lost</li>
+                <li>Use skip codes if you need to jump ahead</li>
+                <li>Follow your heart to the final destination</li>
+            </ol>
+        </div>
+
+        <div class="intro-link-box">
+            <div class="link-label">Start Your Adventure</div>
+            <div class="intro-link">chirayu18.github.io/ScavengerHunt</div>
+        </div>
+
+        <div class="qr-container" style="width: 120px; height: 120px; margin-bottom: 30px;">
+            <img src="qr_code_website_pink.png" alt="Website QR Code">
+        </div>
+
+        <div class="intro-note">
+            Six locations. Six memories.<br>
+            One question at the end.<br>
+            Are you ready?
+        </div>
+    </div>
+
+    <!-- LETTER 1: Park in Jette -->
+    <div class="letter">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="letter-header">
+            <div class="letter-number">Location #1</div>
+            <div class="skip-code-box">
+                <div class="skip-code-label">Skip Code</div>
+                <div class="skip-code">SNOWMAN23</div>
+            </div>
+            <div class="decorative-line"><span>❀</span></div>
+        </div>
+
+        <div class="clue-section">
+            <div class="clue-label">Your Clue</div>
+            <div class="clue-text">Where frozen nights held our laughter tight,
+A snowman built on Gordon's might.
+Return to where the cosmos knew our name,
+The park that watched our love catch flame.</div>
+        </div>
+
+        <div class="content-section">
+            <div class="photo-container">
+                <img src="l1.jpg" alt="Location 1 Memory">
+            </div>
+            <div class="qr-container">
+                <img src="qr_code_location_1_pink.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="letter-footer">
+            <div class="signature-label">With all my love ♥</div>
+        </div>
+    </div>
+
+    <!-- LETTER 2: Mykonos Pitta Gyros -->
+    <div class="letter">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="letter-header">
+            <div class="letter-number">Location #2</div>
+            <div class="skip-code-box">
+                <div class="skip-code-label">Skip Code</div>
+                <div class="skip-code">GYROS4EVR</div>
+            </div>
+            <div class="decorative-line"><span>❀</span></div>
+        </div>
+
+        <div class="clue-section">
+            <div class="clue-label">Your Clue</div>
+            <div class="clue-text">Through cobblestones near the Grand Place's glow,
+Where Greek flavors made our hearts grow.
+Find the street of cheese and ancient trade,
+A hunger for you that never will fade.</div>
+        </div>
+
+        <div class="content-section">
+            <div class="photo-container">
+                <img src="l2.jpg" alt="Location 2 Memory">
+            </div>
+            <div class="qr-container">
+                <img src="qr_code_location_2_pink.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="letter-footer">
+            <div class="signature-label">With all my love ♥</div>
+        </div>
+    </div>
+
+    <!-- LETTER 3: Café Léopold Royal -->
+    <div class="letter">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="letter-header">
+            <div class="letter-number">Location #3</div>
+            <div class="skip-code-box">
+                <div class="skip-code-label">Skip Code</div>
+                <div class="skip-code">FIRSTDATE</div>
+            </div>
+            <div class="decorative-line"><span>❀</span></div>
+        </div>
+
+        <div class="clue-section">
+            <div class="clue-label">Your Clue</div>
+            <div class="clue-text">Near royal streets where kings once strode,
+A café holds our secret code.
+The first of coffees, the first of "us",
+Where nervous hearts learned how to trust.</div>
+        </div>
+
+        <div class="content-section">
+            <div class="photo-container">
+                <img src="l3.jpg" alt="Location 3 Memory">
+            </div>
+            <div class="qr-container">
+                <img src="qr_code_location_3_pink.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="letter-footer">
+            <div class="signature-label">With all my love ♥</div>
+        </div>
+    </div>
+
+    <!-- LETTER 4: Triumphal Arch -->
+    <div class="letter">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="letter-header">
+            <div class="letter-number">Location #4</div>
+            <div class="skip-code-box">
+                <div class="skip-code-label">Skip Code</div>
+                <div class="skip-code">GOLDEN50</div>
+            </div>
+            <div class="decorative-line"><span>❀</span></div>
+        </div>
+
+        <div class="clue-section">
+            <div class="clue-label">Your Clue</div>
+            <div class="clue-text">From whiskers and purrs our journey led,
+To golden arches overhead.
+After our second date we wandered here,
+Where triumph's chariot holds us near.</div>
+        </div>
+
+        <div class="content-section">
+            <div class="photo-container">
+                <img src="l4.jpg" alt="Location 4 Memory">
+            </div>
+            <div class="qr-container">
+                <img src="qr_code_location_4_pink.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="letter-footer">
+            <div class="signature-label">With all my love ♥</div>
+        </div>
+    </div>
+
+    <!-- LETTER 5: Docks Bruxsel -->
+    <div class="letter">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="letter-header">
+            <div class="letter-number">Location #5</div>
+            <div class="skip-code-box">
+                <div class="skip-code-label">Skip Code</div>
+                <div class="skip-code">DOCKS2ND</div>
+            </div>
+            <div class="decorative-line"><span>❀</span></div>
+        </div>
+
+        <div class="clue-section">
+            <div class="clue-label">Your Clue</div>
+            <div class="clue-text">By the docks where waters flow,
+A second chance let our love grow.
+With sushi shared and futures bright,
+This place sealed our hearts that night.</div>
+        </div>
+
+        <div class="content-section">
+            <div class="photo-container">
+                <img src="l5.jpg" alt="Location 5 Memory">
+            </div>
+            <div class="qr-container">
+                <img src="qr_code_location_5_pink.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="letter-footer">
+            <div class="signature-label">With all my love ♥</div>
+        </div>
+    </div>
+
+    <!-- LETTER 6: Sunset Spot -->
+    <div class="letter">
+        <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <div class="letter-header">
+            <div class="letter-number">Location #6</div>
+            <div class="skip-code-box">
+                <div class="skip-code-label">Skip Code</div>
+                <div class="skip-code">SUNSET4US</div>
+            </div>
+            <div class="decorative-line"><span>❀</span></div>
+        </div>
+
+        <div class="clue-section">
+            <div class="clue-label">Your Clue</div>
+            <div class="clue-text">Follow the lion's path to the sky,
+Where sun meets earth and days drift by.
+The final stop where I will ask,
+Will you be mine? My sweetest task.</div>
+        </div>
+
+        <div class="content-section">
+            <div class="photo-container">
+                <img src="l6.jpg" alt="Location 6 Memory">
+            </div>
+            <div class="qr-container">
+                <img src="qr_code_location_6_pink.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="letter-footer">
+            <div class="signature-label">With all my love ♥</div>
+        </div>
+    </div>
+
+</body>
+</html>
