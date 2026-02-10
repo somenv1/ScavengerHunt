@@ -6,7 +6,7 @@
 // Settings
 const settings = {
     showMapsButton: false,  // Toggle to show/hide "Open in Maps" button
-    minRadius: 80          // Minimum radius in meters
+    minRadius: 10          // Minimum radius in meters
 };
 
 // Skip Codes for each location (tap location number 3 times to reveal input)
