@@ -25,7 +25,7 @@ const locations = [
         id: 1,
         name: "The Park in Jette",
         coords: { lat: 50.8823446, lng: 4.3297479 },
-        radius: 100, // meters (was 80, scaled up)
+        radius: 10, // meters (was 80, scaled up)
         clue: `Where frozen nights held our laughter tight,
 A snowman built on Gordon's might.
 Return to where the cosmos knew our name,
@@ -37,7 +37,7 @@ The park that watched our love catch flame.`,
         id: 2,
         name: "Mykonos Pitta Gyros",
         coords: { lat: 50.84585, lng: 4.35291 },
-        radius: 100, // (was 40, now minimum 80)
+        radius: 10, // (was 40, now minimum 80)
         clue: `Through cobblestones near the Grand Place's glow,
 Where Greek flavors made our hearts grow.
 Find the street of cheese and ancient trade,
@@ -49,7 +49,7 @@ A hunger for you that never will fade.`,
         id: 3,
         name: "Café Léopold Royal",
         coords: { lat: 50.847691, lng: 4.363278 },
-        radius: 100, // (was 40, now minimum 80)
+        radius: 10, // (was 40, now minimum 80)
         clue: `Near royal streets where kings once strode,
 A café holds our secret code.
 The first of coffees, the first of "us",
@@ -61,7 +61,7 @@ Where nervous hearts learned how to trust.`,
         id: 4,
         name: "The Triumphal Arch",
         coords: { lat: 50.8405527, lng: 4.3929939 },
-        radius: 150, // (was 60, scaled up)
+        radius: 10, // (was 60, scaled up)
         clue: `From whiskers and purrs our journey led,
 To golden arches overhead.
 After our second date we wandered here,
@@ -73,7 +73,7 @@ Where triumph's chariot holds us near.`,
         id: 5,
         name: "Docks Bruxsel",
         coords: { lat: 50.87984, lng: 4.37348 },
-        radius: 150, // (was 80, scaled up)
+        radius: 10, // (was 80, scaled up)
         clue: `By the docks where waters flow,
 A second chance let our love grow.
 With sushi shared and futures bright,
@@ -85,7 +85,7 @@ This place sealed our hearts that night.`,
         id: 6,
         name: "Our Sunset Spot",
         coords: { lat: 50.880531, lng: 4.383858 },
-        radius: 150, // (was 50, now minimum 80)
+        radius: 10, // (was 50, now minimum 80)
         clue: `Follow the lion's path to the sky,
 Where sun meets earth and days drift by.
 The final stop where I will ask,
